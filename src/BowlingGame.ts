@@ -5,7 +5,7 @@ export default class BowlingGame
     public Roll(noOfPins :number): void 
     {
         let currentFrame : Frame;
-        if (this._frames.length === 0 || !this._frames[this._frames.length].SecondRoll)
+        if (this._frames.length === 0 || !this._frames[this._frames.length].SecondRoll === undefined)
         {
 
         }
@@ -22,9 +22,7 @@ class Frame
     SecondRoll?: number;
 }
 
-class LastFrame 
-{
-    FirstRoll?: number;
-    SecondRoll?: number;
+class LastFrame extends Frame
+{    
     ThirdRoll?: number;
 }

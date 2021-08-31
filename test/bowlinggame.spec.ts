@@ -12,6 +12,24 @@ describe("BowlingGame", () => {
         expect(result).to.equal(8);
     });
 
+    it("Should return a score of 8 when 0 and 8 are rolled", () => {
+        const game = new BowlingGame();
+        game.Roll(4);
+        game.Roll(4);        
+
+        const result = game.Score();
+        expect(result).to.equal(8);
+    });
+
+    it("Should return a score of 8 when 8 and 0 are rolled", () => {
+        const game = new BowlingGame();
+        game.Roll(4);
+        game.Roll(4);        
+
+        const result = game.Score();
+        expect(result).to.equal(8);
+    });
+
     it("Should return a score of 20 when 4,6 | 5,0 are rolled", () => {
         const game = new BowlingGame();
         game.Roll(4);
@@ -46,6 +64,13 @@ describe("BowlingGame", () => {
         const game = new BowlingGame();        
         
         expect(game.Roll(11)).to.be.rejectedWith(Error);
+        
+    });
+
+    it("Should throw an error when a combined roll for a frame is above 10", () => {
+        const game = new BowlingGame();        
+        game.Roll(8);
+        expect(game.Roll(4)).to.be.rejectedWith(Error);
         
     });
 });
