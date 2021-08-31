@@ -56,21 +56,56 @@ describe("BowlingGame", () => {
     it("Should throw an error when a negative roll is passed in", () => {
         const game = new BowlingGame();                
         
-        expect(game.Roll(-1)).to.be.rejectedWith(Error);
+        expect(() => game.Roll(-1)).to.throw(Error);
         
     });
 
     it("Should throw an error when a roll above 10 is passed in", () => {
         const game = new BowlingGame();        
         
-        expect(game.Roll(11)).to.be.rejectedWith(Error);
+        expect(() => game.Roll(11)).to.throw(Error);
         
     });
 
     it("Should throw an error when a combined roll for a frame is above 10", () => {
         const game = new BowlingGame();        
         game.Roll(8);
-        expect(game.Roll(4)).to.be.rejectedWith(Error);
+        expect(() => game.Roll(4)).to.throw(Error);
         
+    });
+    
+    it("Should throw an error if you try to roll again after the game is complete", () => {
+        const game = new BowlingGame();        
+        game.Roll(4);
+        game.Roll(4);
+        
+        game.Roll(4);
+        game.Roll(4);
+        
+        game.Roll(4);
+        game.Roll(4);
+        
+        game.Roll(4);
+        game.Roll(4);
+        
+        game.Roll(4);
+        game.Roll(4);
+        
+        game.Roll(4);
+        game.Roll(4);
+        
+        game.Roll(4);
+        game.Roll(4);
+        
+        game.Roll(4);
+        game.Roll(4);
+        
+        game.Roll(4);
+        game.Roll(4);
+        
+        game.Roll(4);        
+        game.Roll(4);
+               
+        expect(() => game.Roll(4)).to.throw(Error);
     });
 });
