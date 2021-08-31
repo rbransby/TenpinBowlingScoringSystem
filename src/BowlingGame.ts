@@ -1,6 +1,7 @@
 export default class BowlingGame
 {
-    private _frames: Frame[] = [];
+    private _frames: (Frame)[] = [];
+    private _finalRoll? : number;
 
     public Roll(noOfPins :number): void 
     {        
@@ -10,15 +11,24 @@ export default class BowlingGame
         }
 
         let currentFrame = this.getCurrentFrame();
-        if (this._frames.length === 10 && currentFrame?.SecondRoll !== undefined)
+        if (this._frames.length === 10)
+        {                                
+            if (currentFrame.SecondRoll === undefined)
+            {
+                currentFrame.SecondRoll = noOfPins;                
+            }
+            else if ((currentFrame.FirstRoll + (currentFrame.SecondRoll ?? 0) >= 10) && this._finalRoll === undefined)
+            {         
+                this._finalRoll = noOfPins;                
+            }       
+            else 
+            {
+                throw new Error("Game is complete!");
+            }     
+        }        
+        else if (this._frames.length === 0 || currentFrame.FirstRoll === 10 || !(currentFrame.SecondRoll === undefined))
         {
-            throw new Error("Game is complete!");
-        }
-
-        
-        if (this._frames.length === 0 || currentFrame.FirstRoll === 10 || !(currentFrame.SecondRoll === undefined))
-        {
-            this._frames.push(new Frame(noOfPins));                        
+            this._frames.push(new Frame(noOfPins));                                    
         }        
         else
         {
@@ -35,17 +45,22 @@ export default class BowlingGame
     public Score() : number {
         let score = 0;
         for (let i = 0; i < this._frames.length; i++)
-        {
+        {            
             const frame = this._frames[i];
-            if (frame.FirstRoll === 10)
+            if (i === 9)
+            {
+                // we're on the last frame, add together + finalroll                
+                score += (frame.FirstRoll + (frame.SecondRoll ?? 0) + (this._finalRoll ?? 0));                
+            }
+            else if (frame.FirstRoll === 10)
             {
                 //score for this frame is 10 + the next two bowls. This has the potential to span two frames if the next bowl was also a strike.
                 const nextFrame = this._frames[i+1];
-                if (nextFrame && nextFrame.SecondRoll !== undefined && nextFrame.FirstRoll < 10)
+                if (nextFrame && nextFrame.SecondRoll !== undefined)
                 {
                     score += 10 + nextFrame.FirstRoll + nextFrame.SecondRoll;
                 }
-                else if (nextFrame.FirstRoll === 10)
+                else 
                 {
                     // get the next frame and use its FirstRoll
                     const nextNextFrame = this._frames[i+2];
@@ -61,7 +76,7 @@ export default class BowlingGame
                 if (nextFrame)
                 {
                     score += 10 + nextFrame.FirstRoll;
-                }
+                }                
             }
             else
             {
@@ -85,9 +100,4 @@ class Frame
     }
     FirstRoll: number;
     SecondRoll?: number;
-}
-
-class LastFrame extends Frame
-{    
-    ThirdRoll?: number;
 }

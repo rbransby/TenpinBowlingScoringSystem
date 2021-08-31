@@ -77,6 +77,25 @@ describe("BowlingGame", () => {
         const result = game.Score();
         expect(result).to.equal(56);
     });
+
+    it("Should return a score of 300 for a perfect game", () => {
+        const game = new BowlingGame();
+        game.Roll(10);        
+        game.Roll(10);        
+        game.Roll(10);        
+        game.Roll(10);        
+        game.Roll(10);        
+        game.Roll(10);        
+        game.Roll(10);        
+        game.Roll(10);        
+        game.Roll(10);        
+        game.Roll(10);        
+        game.Roll(10);        
+        game.Roll(10);        
+
+        const result = game.Score();
+        expect(result).to.equal(300);
+    });
     
     it("Should throw an error when a negative roll is passed in", () => {
         const game = new BowlingGame();                
@@ -129,7 +148,7 @@ describe("BowlingGame", () => {
         game.Roll(4);
         
         game.Roll(4);        
-        game.Roll(4);
+        game.Roll(1);
                
         expect(() => game.Roll(4)).to.throw(Error);
     });
